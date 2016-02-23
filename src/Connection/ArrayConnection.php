@@ -136,6 +136,30 @@ class ArrayConnection
     }
 
     /**
+     * Return the cursor associated with an object in an array.
+     *
+     * @param array $data
+     * @param $object
+     * @return null|string
+     */
+    public static function cursorForObjectInConnection(array $data, $object)
+    {
+        $offset = -1;
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i] == $object){
+                $offset = $i;
+                break;
+            }
+        }
+
+        if ($offset === -1) {
+            return null;
+        }
+
+        return self::offsetToCursor($offset);
+    }
+
+    /**
      * Returns the value for the given array key, NULL, if it does not exist
      *
      * @param array $array

@@ -39,10 +39,10 @@ class Mutation {
      */
     public static function mutationWithClientMutationId(array $config)
     {
-        $name = self::getArrayValueSafe($config, 'name');
-        $inputFields = self::getArrayValueSafe($config, 'inputFields');
-        $outputFields = self::getArrayValueSafe($config, 'outputFields');
-        $mutateAndGetPayload = self::getArrayValueSafe($config, 'mutateAndGetPayload');
+        $name = self::getArrayValue($config, 'name');
+        $inputFields = self::getArrayValue($config, 'inputFields');
+        $outputFields = self::getArrayValue($config, 'outputFields');
+        $mutateAndGetPayload = self::getArrayValue($config, 'mutateAndGetPayload');
 
         // @TODO: For some reason we cannot define the fields as callback function, they are ignored by GraphQL
         $inputFieldsResolved = self::resolveMaybeThunk($inputFields);
@@ -93,9 +93,13 @@ class Mutation {
      * @param string $key
      * @return mixed
      */
-    protected static function getArrayValueSafe(array $array, $key)
+    protected static function getArrayValue(array $array, $key)
     {
-        return array_key_exists($key, $array) ? $array[$key] : null;
+        if (array_key_exists($key, $array)){
+            return $array[$key];
+        } else {
+            throw new \InvalidArgumentException('The config value for "' . $key . '" is required, but missing in MutationConfig."');
+        }
     }
 
     protected static function resolveMaybeThunk($thinkOrThunk)
