@@ -72,12 +72,12 @@ class ArrayConnection
      */
     public static function connectionFromArraySlice(array $arraySlice, $args, $meta)
     {
-        $after = $args['after'];
-        $before = $args['before'];
-        $first = $args['first'];
-        $last = $args['last'];
-        $sliceStart = $meta['sliceStart'];
-        $arrayLength = $meta['arrayLength'];
+        $after = self::getArrayValue($args, 'after');
+        $before = self::getArrayValue($args, 'before');
+        $first = self::getArrayValue($args, 'first');
+        $last = self::getArrayValue($args, 'last');
+        $sliceStart = self::getArrayValue($meta, 'sliceStart');
+        $arrayLength = self::getArrayValue($meta, 'arrayLength');
         $sliceEnd = $sliceStart + count($arraySlice);
         $beforeOffset = self::getOffsetWidthDefault($before, $arrayLength);
         $afterOffset = self::getOffsetWidthDefault($after, -1);
@@ -133,5 +133,17 @@ class ArrayConnection
                 'hasNextPage' => $first !== null ? $endOffset < $upperBound : false
             ]
         ];
+    }
+
+    /**
+     * Returns the value for the given array key, NULL, if it does not exist
+     *
+     * @param array $array
+     * @param string $key
+     * @return mixed
+     */
+    protected static function getArrayValue(array $array, $key)
+    {
+        return array_key_exists($key, $array) ? $array[$key] : null;
     }
 }
