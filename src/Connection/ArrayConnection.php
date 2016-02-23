@@ -72,12 +72,12 @@ class ArrayConnection
      */
     public static function connectionFromArraySlice(array $arraySlice, $args, $meta)
     {
-        $after = self::getArrayValue($args, 'after');
-        $before = self::getArrayValue($args, 'before');
-        $first = self::getArrayValue($args, 'first');
-        $last = self::getArrayValue($args, 'last');
-        $sliceStart = self::getArrayValue($meta, 'sliceStart');
-        $arrayLength = self::getArrayValue($meta, 'arrayLength');
+        $after = self::getArrayValueSafe($args, 'after');
+        $before = self::getArrayValueSafe($args, 'before');
+        $first = self::getArrayValueSafe($args, 'first');
+        $last = self::getArrayValueSafe($args, 'last');
+        $sliceStart = self::getArrayValueSafe($meta, 'sliceStart');
+        $arrayLength = self::getArrayValueSafe($meta, 'arrayLength');
         $sliceEnd = $sliceStart + count($arraySlice);
         $beforeOffset = self::getOffsetWidthDefault($before, $arrayLength);
         $afterOffset = self::getOffsetWidthDefault($after, -1);
@@ -142,7 +142,7 @@ class ArrayConnection
      * @param string $key
      * @return mixed
      */
-    protected static function getArrayValue(array $array, $key)
+    protected static function getArrayValueSafe(array $array, $key)
     {
         return array_key_exists($key, $array) ? $array[$key] : null;
     }
