@@ -25,7 +25,12 @@ class ArrayConnection
      */
     public static function cursorToOffset($cursor)
     {
-        return intval(substr(base64_decode($cursor), strlen(self::PREFIX)));
+        $offset = substr(base64_decode($cursor), strlen(self::PREFIX));
+        if (is_numeric($offset)){
+            return intval($offset);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -39,7 +44,7 @@ class ArrayConnection
             return $defaultOffset;
         }
         $offset = self::cursorToOffset($cursor);
-        return $offset ? $defaultOffset : $offset;
+        return $offset !== null ? $offset: $defaultOffset;
     }
 
     /**
@@ -109,7 +114,7 @@ class ArrayConnection
 
         $slice = array_slice($arraySlice,
             max($startOffset - $sliceStart, 0),
-            count($arraySlice) - ($sliceEnd - $endOffset)
+            count($arraySlice) - ($sliceEnd - $endOffset) - max($startOffset - $sliceStart, 0)
         );
 
         $edges = array_map(function($item, $index) use ($startOffset) {
@@ -119,8 +124,8 @@ class ArrayConnection
             ];
         }, $slice, array_keys($slice));
 
-        $firstEdge = $edges[0];
-        $lastEdge = $edges[count($edges) - 1];
+        $firstEdge = $edges ? $edges[0] : null;
+        $lastEdge = $edges ? $edges[count($edges) - 1] : null;
         $lowerBound = $after ? ($afterOffset + 1) : 0;
         $upperBound = $before ? ($beforeOffset) : $arrayLength;
 
