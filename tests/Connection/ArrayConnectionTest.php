@@ -724,4 +724,269 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(null, $cursor);
     }
+
+    public function testWorksWithAJustRightArraySlice()
+    {
+        $connection = ArrayConnection::connectionFromArraySlice(
+            array_slice($this->letters, 1, 2),
+            [
+                'first' => 2,
+                'after' => 'YXJyYXljb25uZWN0aW9uOjA=',
+            ],
+            [
+                'sliceStart' => 1,
+                'arrayLength' => 5
+            ]
+        );
+
+        $expected = array (
+            'edges' =>
+                array (
+                    0 =>
+                        array (
+                            'node' => 'B',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
+                        ),
+                    1 =>
+                        array (
+                            'node' => 'C',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                        ),
+                ),
+            'pageInfo' =>
+                array (
+                    'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
+                    'endCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                    'hasPreviousPage' => false,
+                    'hasNextPage' => true,
+                ),
+        );
+
+        $this->assertEquals($expected, $connection);
+    }
+
+    public function testWorksWithAnOversizedArraySliceLeftSide()
+    {
+        $connection = ArrayConnection::connectionFromArraySlice(
+            array_slice($this->letters, 0, 3),
+            [
+                'first' => 2,
+                'after' => 'YXJyYXljb25uZWN0aW9uOjA=',
+            ],
+            [
+                'sliceStart' => 0,
+                'arrayLength' => 5
+            ]
+        );
+
+        $expected = array (
+            'edges' =>
+                array (
+                    0 =>
+                        array (
+                            'node' => 'B',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
+                        ),
+                    1 =>
+                        array (
+                            'node' => 'C',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                        ),
+                ),
+            'pageInfo' =>
+                array (
+                    'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
+                    'endCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                    'hasPreviousPage' => false,
+                    'hasNextPage' => true,
+                ),
+        );
+
+        $this->assertEquals($expected, $connection);
+    }
+
+    public function testWorksWithAnOversizedArraySliceRightSide()
+    {
+        $connection = ArrayConnection::connectionFromArraySlice(
+            array_slice($this->letters, 2, 2),
+            [
+                'first' => 1,
+                'after' => 'YXJyYXljb25uZWN0aW9uOjE=',
+            ],
+            [
+                'sliceStart' => 2,
+                'arrayLength' => 5
+            ]
+        );
+
+        $expected = array (
+            'edges' =>
+                array (
+                    0 =>
+                        array (
+                            'node' => 'C',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                        ),
+                ),
+            'pageInfo' =>
+                array (
+                    'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                    'endCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                    'hasPreviousPage' => false,
+                    'hasNextPage' => true,
+                ),
+        );
+
+        $this->assertEquals($expected, $connection);
+    }
+
+    public function testWorksWithAnOversizedArraySliceBothSides()
+    {
+        $connection = ArrayConnection::connectionFromArraySlice(
+            array_slice($this->letters, 1, 3),
+            [
+                'first' => 1,
+                'after' => 'YXJyYXljb25uZWN0aW9uOjE=',
+            ],
+            [
+                'sliceStart' => 1,
+                'arrayLength' => 5
+            ]
+        );
+
+        $expected = array (
+            'edges' =>
+                array (
+                    0 =>
+                        array (
+                            'node' => 'C',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                        ),
+                ),
+            'pageInfo' =>
+                array (
+                    'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                    'endCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                    'hasPreviousPage' => false,
+                    'hasNextPage' => true,
+                ),
+        );
+
+        $this->assertEquals($expected, $connection);
+    }
+
+    public function testWorksWithAnUndersizedArraySliceLeftSide()
+    {
+        $connection = ArrayConnection::connectionFromArraySlice(
+            array_slice($this->letters, 3, 2),
+            [
+                'first' => 3,
+                'after' => 'YXJyYXljb25uZWN0aW9uOjE=',
+            ],
+            [
+                'sliceStart' => 3,
+                'arrayLength' => 5
+            ]
+        );
+
+        $expected = array (
+            'edges' =>
+                array (
+                    0 =>
+                        array (
+                            'node' => 'D',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
+                        ),
+                    1 =>
+                        array (
+                            'node' => 'E',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
+                        ),
+                ),
+            'pageInfo' =>
+                array (
+                    'startCursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
+                    'endCursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
+                    'hasPreviousPage' => false,
+                    'hasNextPage' => false,
+                ),
+        );
+
+        $this->assertEquals($expected, $connection);
+    }
+
+    public function testWorksWithAnUndersizedArraySliceRightSide()
+    {
+        $connection = ArrayConnection::connectionFromArraySlice(
+            array_slice($this->letters, 2, 2),
+            [
+                'first' => 3,
+                'after' => 'YXJyYXljb25uZWN0aW9uOjE=',
+            ],
+            [
+                'sliceStart' => 2,
+                'arrayLength' => 5
+            ]
+        );
+
+        $expected = array (
+            'edges' =>
+                array (
+                    0 =>
+                        array (
+                            'node' => 'C',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                        ),
+                    1 =>
+                        array (
+                            'node' => 'D',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
+                        ),
+                ),
+            'pageInfo' =>
+                array (
+                    'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
+                    'endCursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
+                    'hasPreviousPage' => false,
+                    'hasNextPage' => true,
+                ),
+        );
+
+        $this->assertEquals($expected, $connection);
+    }
+
+    public function testWorksWithAnUndersizedArraySliceBothSides()
+    {
+        $connection = ArrayConnection::connectionFromArraySlice(
+            array_slice($this->letters, 3, 1),
+            [
+                'first' => 3,
+                'after' => 'YXJyYXljb25uZWN0aW9uOjE=',
+            ],
+            [
+                'sliceStart' => 3,
+                'arrayLength' => 5
+            ]
+        );
+
+        $expected = array (
+            'edges' =>
+                array (
+                    0 =>
+                        array (
+                            'node' => 'D',
+                            'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
+                        ),
+                ),
+            'pageInfo' =>
+                array (
+                    'startCursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
+                    'endCursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
+                    'hasPreviousPage' => false,
+                    'hasNextPage' => true,
+                ),
+        );
+
+        $this->assertEquals($expected, $connection);
+    }
 }
