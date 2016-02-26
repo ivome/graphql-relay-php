@@ -44,13 +44,14 @@ class Mutation {
         $outputFields = self::getArrayValue($config, 'outputFields');
         $mutateAndGetPayload = self::getArrayValue($config, 'mutateAndGetPayload');
 
-        // @TODO: For some reason we cannot define the fields as callback function, they are ignored by GraphQL
-        $inputFieldsResolved = self::resolveMaybeThunk($inputFields);
-        $augmentedInputFields = array_merge($inputFieldsResolved !== null ? $inputFieldsResolved : [], [
-            'clientMutationId' => [
-                'type' => Type::nonNull(Type::string())
-            ]
-        ]);
+        $augmentedInputFields = function() use ($inputFields) {
+            $inputFieldsResolved = self::resolveMaybeThunk($inputFields);
+            return array_merge($inputFieldsResolved !== null ? $inputFieldsResolved : [], [
+                'clientMutationId' => [
+                    'type' => Type::nonNull(Type::string())
+                ]
+            ]);
+        };
 
         $augmentedOutputFields = function () use ($outputFields) {
             $outputFieldsResolved = self::resolveMaybeThunk($outputFields);

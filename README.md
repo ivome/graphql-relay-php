@@ -15,7 +15,6 @@ The basic functionality with most of the helper functions is in place along with
 
 - Port of Documentation
 - Port of the general StarWars tests
-- Tests for ArrayConnection methods
 - Figure out a way to add Promise support (if needed)
 - pluralIdentifyingRootField
 

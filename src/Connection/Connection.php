@@ -85,33 +85,37 @@ class Connection {
         $edgeType = new ObjectType(array_merge([
             'name' => $name . 'Edge',
             'description' => 'An edge in a connection',
-            'fields' => array_merge([
-                'node' => [
-                    'type' => $nodeType,
-                    'resolve' => $resolveNode,
-                    'description' => 'The item at the end of the edge'
-                ],
-                'cursor' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'resolve' => $resolveCursor,
-                    'description' => 'A cursor for use in pagination'
-                ]
-            ], self::resolveMaybeThunk($edgeFields)),
+            'fields' => function() use ($nodeType, $resolveNode, $resolveCursor, $edgeFields) {
+                return array_merge([
+                    'node' => [
+                        'type' => $nodeType,
+                        'resolve' => $resolveNode,
+                        'description' => 'The item at the end of the edge'
+                    ],
+                    'cursor' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'resolve' => $resolveCursor,
+                        'description' => 'A cursor for use in pagination'
+                    ]
+                ], self::resolveMaybeThunk($edgeFields));
+            }
         ]));
 
         $connectionType = new ObjectType([
             'name' => $name . 'Connection',
             'description' => 'A connection to a list of items.',
-            'fields' => array_merge([
-                'pageInfo' => [
-                    'type' => Type::nonNull(self::pageInfoType()),
-                    'description' => 'Information to aid in pagination.'
-                ],
-                'edges' => [
-                    'type' => Type::listOf($edgeType),
-                    'description' => 'Information to aid in pagination'
-                ]
-            ], self::resolveMaybeThunk($connectionFields))
+            'fields' => function() use ($edgeType, $connectionFields) {
+                return array_merge([
+                    'pageInfo' => [
+                        'type' => Type::nonNull(self::pageInfoType()),
+                        'description' => 'Information to aid in pagination.'
+                    ],
+                    'edges' => [
+                        'type' => Type::listOf($edgeType),
+                        'description' => 'Information to aid in pagination'
+                    ]
+                ], self::resolveMaybeThunk($connectionFields));
+            }
         ]);
 
         return [
