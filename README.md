@@ -43,10 +43,10 @@ that documentation and the corresponding tests in this library together.
 
 ## Using Relay Library for graphql-php
 
-Clone this repository and run composer install
+Install this repository via composer: 
 
 ```sh
-composer install
+composer require ivome/graphql-relay-php
 ```
 
 When building a schema for [graphql-php](https://github.com/webonyx/graphql-php),
