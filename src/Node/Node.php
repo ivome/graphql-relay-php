@@ -107,7 +107,7 @@ class Node {
             'type' => Type::nonNull(Type::id()),
             'resolve' => function($obj, $args, $info) use ($typeName, $idFetcher) {
                 return self::toGlobalId(
-                    $typeName !== null ? $typeName : $info['parentType']['name'],
+                    $typeName !== null ? $typeName : $info->parentType->name,
                     $idFetcher ? $idFetcher($obj, $info) : $obj['id']
                 );
             }

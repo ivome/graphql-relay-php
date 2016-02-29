@@ -7,14 +7,12 @@ of a GraphQL server.
 *Note: The code is a __exact__ port of the original [graphql-relay js implementation](https://github.com/graphql/graphql-relay-js)
 from Facebook* (With some minor PHP related adjustments)
 
-## Currently Status: Work in progress
+## Current Status: Work in progress
 
 The basic functionality with most of the helper functions is in place along with the tests. 
 
 ### Current TODOs: 
 
-- Port of Documentation
-- Port of the general StarWars tests
 - Figure out a way to add Promise support (if needed)
 - pluralIdentifyingRootField
 
@@ -75,24 +73,39 @@ resolves to the expected shape by `connectionType`.
  - `Relay::cursorForObjectInConnection` is a helper method that takes an array and a
 member object, and returns a cursor for use in the mutation payload.
 
-TODO: An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
+TODO: An example usage of these methods from the [test schema](tests/StarWarsSchema.php):
 
-```js
-var {connectionType: ShipConnection} =
-  connectionDefinitions({nodeType: shipType});
-var factionType = new GraphQLObjectType({
-  name: 'Faction',
-  fields: () => ({
-    ships: {
-      type: ShipConnection,
-      args: connectionArgs,
-      resolve: (faction, args) => connectionFromArray(
-        faction.ships.map((id) => data.Ship[id]),
-        args
-      ),
-    }
-  }),
-});
+```php
+$shipConnection = Relay::connectionDefinitions([
+    'nodeType' => $shipType
+]);
+  
+$factionType = new ObjectType([
+    'name' => 'Faction',
+    'description' => 'A faction in the Star Wars saga',
+    'fields' => function() use ($shipConnection) {
+        return [
+            'id' => Relay::globalIdField(),
+            'name' => [
+                'type' => Type::string(),
+                'description' => 'The name of the faction.'
+            ],
+            'ships' => [
+                'type' => $shipConnection['connectionType'],
+                'description' => 'The ships used by the faction.',
+                'args' => Relay::connectionArgs(),
+                'resolve' => function($faction, $args) {
+                    // Map IDs from faction back to ships
+                    $data = array_map(function($id) {
+                        return StarWarsData::getShip($id);
+                    }, $faction['ships']);
+                    return Relay::connectionFromArray($data, $args);
+                }
+            ]
+        ];
+    },
+    'interfaces' => [$nodeDefinition['nodeInterface']]
+]);
 ```
 
 This shows adding a `ships` field to the `Faction` object that is a connection.
@@ -119,33 +132,62 @@ the type name and ID used to create it.
 non-ID identifiers (like a username) and maps then to their corresponding
 objects.
 
-An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
+An example usage of these methods from the [test schema](tests/StarWarsSchema.php):
 
-```js
-var {nodeInterface, nodeField} = nodeDefinitions(
-  (globalId) => {
-    var {type, id} = fromGlobalId(globalId);
-    return data[type][id];
-  },
-  (obj) => {
-    return obj.ships ? factionType : shipType;
-  }
+```php
+$nodeDefinition = Relay::nodeDefinitions(
+    // The ID fetcher definition
+    function ($globalId) {
+        $idComponents = Relay::fromGlobalId($globalId);
+        if ($idComponents['type'] === 'Faction'){
+            return StarWarsData::getFaction($idComponents['id']);
+        } else if ($idComponents['type'] === 'Ship'){
+            return StarWarsData::getShip($idComponents['id']);
+        } else {
+            return null;
+        }
+    },
+    // Type resolver
+    function ($object) {
+        return isset($object['ships']) ? self::getFactionType() : self::getShipType();
+    }
 );
 
-var factionType = new GraphQLObjectType({
-  name: 'Faction',
-  fields: () => ({
-    id: globalIdField(),
-  }),
-  interfaces: [nodeInterface]
-});
+$factionType = new ObjectType([
+    'name' => 'Faction',
+    'description' => 'A faction in the Star Wars saga',
+    'fields' => function() use ($shipConnection) {
+        return [
+            'id' => Relay::globalIdField(),
+            'name' => [
+                'type' => Type::string(),
+                'description' => 'The name of the faction.'
+            ],
+            'ships' => [
+                'type' => $shipConnection['connectionType'],
+                'description' => 'The ships used by the faction.',
+                'args' => Relay::connectionArgs(),
+                'resolve' => function($faction, $args) {
+                    // Map IDs from faction back to ships
+                    $data = array_map(function($id) {
+                        return StarWarsData::getShip($id);
+                    }, $faction['ships']);
+                    return Relay::connectionFromArray($data, $args);
+                }
+            ]
+        ];
+    },
+    'interfaces' => [$nodeDefinition['nodeInterface']]
+]);
 
-var queryType = new GraphQLObjectType({
-  name: 'Query',
-  fields: () => ({
-    node: nodeField
-  })
-});
+$queryType = new ObjectType([
+    'name' => 'Query',
+    'fields' => function () use ($nodeDefinition) {
+        return [
+            'node' => $nodeDefinition['nodeField']
+        ];
+    },
+]);
 ```
 
 This uses `Relay::nodeDefinitions` to construct the `Node` interface and the `node`
@@ -165,49 +207,50 @@ and a mutation method to map from the input fields to the output fields,
 performing the mutation along the way. It then creates and returns a field
 configuration that can be used as a top-level field on the mutation type.
 
-An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
+An example usage of these methods from the [test schema](tests/StarWarsSchema.php):
 
-```js
-var shipMutation = mutationWithClientMutationId({
-  name: 'IntroduceShip',
-  inputFields: {
-    shipName: {
-      type: new GraphQLNonNull(GraphQLString)
-    },
-    factionId: {
-      type: new GraphQLNonNull(GraphQLID)
+```php
+$shipMutation = Relay::mutationWithClientMutationId([
+    'name' => 'IntroduceShip',
+    'inputFields' => [
+        'shipName' => [
+            'type' => Type::nonNull(Type::string())
+        ],
+        'factionId' => [
+            'type' => Type::nonNull(Type::id())
+        ]
+    ],
+    'outputFields' => [
+        'ship' => [
+            'type' => $shipType,
+            'resolve' => function ($payload) {
+                return StarWarsData::getShip($payload['shipId']);
+            }
+        ],
+        'faction' => [
+            'type' => $factionType,
+            'resolve' => function ($payload) {
+                return StarWarsData::getFaction($payload['factionId']);
+            }
+        ]
+    ],
+    'mutateAndGetPayload' => function ($input) {
+        $newShip = StarWarsData::createShip($input['shipName'], $input['factionId']);
+        return [
+            'shipId' => $newShip['id'],
+            'factionId' => $input['factionId']
+        ];
     }
-  },
-  outputFields: {
-    ship: {
-      type: shipType,
-      resolve: (payload) => data['Ship'][payload.shipId]
-    },
-    faction: {
-      type: factionType,
-      resolve: (payload) => data['Faction'][payload.factionId]
-    }
-  },
-  mutateAndGetPayload: ({shipName, factionId}) => {
-    var newShip = {
-      id: getNewShipId(),
-      name: shipName
-    };
-    data.Ship[newShip.id] = newShip;
-    data.Faction[factionId].ships.push(newShip.id);
-    return {
-      shipId: newShip.id,
-      factionId: factionId,
-    };
-  }
-});
+]);
 
-var mutationType = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: () => ({
-    introduceShip: shipMutation
-  })
-});
+$mutationType = new ObjectType([
+    'name' => 'Mutation',
+    'fields' => function () use ($shipMutation) {
+        return [
+            'introduceShip' => $shipMutation
+        ];
+    }
+]);
 ```
 
 This code creates a mutation named `IntroduceShip`, which takes a faction
