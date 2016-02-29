@@ -12,4 +12,8 @@ install:
     - composer install --prefer-dist
 
 script:
-    - ./bin/phpunit tests/
+    - mkdir -p build/logs
+    - ./bin/phpunit --coverage-clover build/logs/clover.xml tests/
+
+after_script:
+    - ./bin/coveralls -v

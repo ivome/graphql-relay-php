@@ -4,6 +4,9 @@ This is a library to allow the easy creation of Relay-compliant servers using
 the [graphql-php](https://github.com/webonyx/graphql-php) reference implementation
 of a GraphQL server.
 
+[![Build Status](https://travis-ci.org/ivome/graphql-relay-php.svg?branch=master)](https://travis-ci.org/ivome/graphql-relay-php)
+[![Coverage Status](https://coveralls.io/repos/github/ivome/graphql-relay-php/badge.svg?branch=master)](https://coveralls.io/github/ivome/graphql-relay-php?branch=master)
+
 *Note: The code is a __exact__ port of the original [graphql-relay js implementation](https://github.com/graphql/graphql-relay-js)
 from Facebook* (With some minor PHP related adjustments)
 
