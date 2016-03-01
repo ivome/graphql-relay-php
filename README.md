@@ -10,16 +10,10 @@ of a GraphQL server.
 *Note: The code is a __exact__ port of the original [graphql-relay js implementation](https://github.com/graphql/graphql-relay-js)
 from Facebook* (With some minor PHP related adjustments)
 
-## Current Status: Work in progress
+## Current Status: 
 
-The basic functionality with most of the helper functions is in place along with the tests. 
-
-### Current TODOs: 
-
-- Figure out a way to add Promise support (if needed)
-- pluralIdentifyingRootField
-
-Contributions are welcome
+The basic functionality with most of the helper functions is in place along with the tests. Only the asynchronous functionality
+was not yet ported due to the limitations of PHP. See also discussions [here](https://github.com/ivome/graphql-relay-php/issues/1) and [here](https://github.com/webonyx/graphql-php/issues/9)
 
 ## Getting Started
 
@@ -76,7 +70,7 @@ resolves to the expected shape by `connectionType`.
  - `Relay::cursorForObjectInConnection` is a helper method that takes an array and a
 member object, and returns a cursor for use in the mutation payload.
 
-TODO: An example usage of these methods from the [test schema](tests/StarWarsSchema.php):
+An example usage of these methods from the [test schema](tests/StarWarsSchema.php):
 
 ```php
 $shipConnection = Relay::connectionDefinitions([
@@ -131,7 +125,7 @@ and returns a "global ID" that is unique among all types.
  - `Relay::fromGlobalId` takes the "global ID" created by `toGlobalID`, and returns
 the type name and ID used to create it.
  - `Relay::globalIdField` creates the configuration for an `id` field on a node.
- - TODO: `Relay::pluralIdentifyingRootField` creates a field that accepts a list of
+ - `Relay::pluralIdentifyingRootField` creates a field that accepts a list of
 non-ID identifiers (like a username) and maps then to their corresponding
 objects.
 
