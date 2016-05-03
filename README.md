@@ -31,7 +31,7 @@ of a GraphQL server.
 An overview of the functionality that a Relay-compliant GraphQL server should
 provide is in the [GraphQL Relay Specification](https://facebook.github.io/relay/docs/graphql-relay-specification.html)
 on the [Relay website](https://facebook.github.io/relay/). That overview
-describes a simple set of examples that exist as [tests](src/__tests__) in this
+describes a simple set of examples that exist as [tests](tests) in this
 repository. A good way to get started with this repository is to walk through
 that documentation and the corresponding tests in this library together.
 
@@ -64,9 +64,6 @@ when they return a connection type that only supports backward pagination.
  - `Relay::connectionFromArray` is a helper method that takes an array and the
 arguments from `connectionArgs`, does pagination and filtering, and returns
 an object in the shape expected by a `connectionType`'s `resolve` function.
- - `Relay::connectionFromPromisedArray` is similar to `connectionFromArray`, but
-it takes a promise that resolves to an array, and returns a promise that
-resolves to the expected shape by `connectionType`.
  - `Relay::cursorForObjectInConnection` is a helper method that takes an array and a
 member object, and returns a cursor for use in the mutation payload.
 
