@@ -81,7 +81,10 @@ class MutationTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
 
-        $this->schema = new Schema($this->mutation, $this->mutation);
+        $this->schema = new Schema([
+            'mutation' => $this->mutation,
+            'query' => $this->mutation
+        ]);
     }
 
     public function testRequiresAnArgument() {

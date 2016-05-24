@@ -40,7 +40,7 @@ class PluralTest extends \PHPUnit_Framework_TestCase {
                         'description' => 'Map from a username to the user',
                         'inputType' => Type::string(),
                         'outputType' => $userType,
-                        'resolveSingleInput' => function ($userName, $info) {
+                        'resolveSingleInput' => function ($userName, $context, $info) {
                             return [
                                 'username' => $userName,
                                 'url' => 'www.facebook.com/' . $userName . '?lang=' . $info->rootValue['lang']
@@ -51,7 +51,9 @@ class PluralTest extends \PHPUnit_Framework_TestCase {
             }
         ]);
 
-        return new Schema($queryType);
+        return new Schema([
+            'query' => $queryType
+        ]);
     }
 
     public function testAllowsFetching() {

@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.4,<8.0-DEV",
-        "webonyx/graphql-php": ">=0.5.7"
+        "webonyx/graphql-php": "dev-spec-april2016"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8",

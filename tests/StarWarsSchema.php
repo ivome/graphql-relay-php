@@ -369,7 +369,10 @@ class StarWarsSchema {
          * Finally, we construct our schema (whose starting query type is the query
          * type we defined above) and export it.
          */
-        $schema = new Schema($queryType, $mutationType);
+        $schema = new Schema([
+            'query' => $queryType,
+            'mutation' => $mutationType
+        ]);
 
         return $schema;
     }
