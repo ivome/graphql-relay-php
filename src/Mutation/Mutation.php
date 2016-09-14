@@ -10,6 +10,7 @@ namespace GraphQLRelay\Mutation;
 
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 
 class Mutation {
@@ -79,8 +80,8 @@ class Mutation {
                     'type' => Type::nonNull($inputType)
                 ]
             ],
-            'resolve' => function ($query, $args, $info) use ($mutateAndGetPayload) {
-                $payload = call_user_func($mutateAndGetPayload, $args['input'], $info);
+            'resolve' => function ($query, $args, $context, ResolveInfo $info) use ($mutateAndGetPayload) {
+                $payload = call_user_func($mutateAndGetPayload, $args['input'], $context, $info);
                 $payload['clientMutationId'] = $args['input']['clientMutationId'];
                 return $payload;
             }

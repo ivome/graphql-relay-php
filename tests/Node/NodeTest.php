@@ -11,6 +11,7 @@ namespace GraphQLRelay\Tests\Node;
 use GraphQL\GraphQL;
 use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use GraphQLRelay\Node\Node;
 
@@ -275,7 +276,17 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
      * @return Schema
      */
     protected function getSchema() {
-        return new Schema($this->getQueryType());
+        return new Schema([
+            'query' => $this->getQueryType(),
+
+            // We have to pass the types here manually because graphql-php cannot
+            // recognize types that are only available through interfaces
+            // https://github.com/webonyx/graphql-php/issues/38
+            'types' => [
+                self::$userType,
+                self::$photoType
+            ]
+        ]);
     }
 
     /**
@@ -288,7 +299,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
         return new ObjectType([
             'name' => 'Query',
             'fields' => [
-                'node' => $this->getNodeDefinitions()['nodeField']
+                'node' => $nodeField['nodeField']
             ]
         ]);
     }
@@ -301,7 +312,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
     protected function getNodeDefinitions() {
         if (!self::$nodeDefinition){
             self::$nodeDefinition = Node::nodeDefinitions(
-                function($id, $info) {
+                function($id, $context, ResolveInfo $info) {
                     $userData = $this->getUserData();
                     if (array_key_exists($id, $userData)){
                         return $userData[$id];
@@ -391,7 +402,9 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
      */
     private function assertValidQuery($query, $expected)
     {
-        $this->assertEquals(['data' => $expected], GraphQL::execute($this->getSchema(), $query));
+        $result = GraphQL::execute($this->getSchema(), $query);
+
+        $this->assertEquals(['data' => $expected], $result);
     }
 
 }

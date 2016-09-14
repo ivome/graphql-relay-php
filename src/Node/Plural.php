@@ -8,6 +8,7 @@
 namespace GraphQLRelay\Node;
 
 
+use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 
 class Plural {
@@ -41,10 +42,10 @@ class Plural {
             'description' => isset($config['description']) ? $config['description'] : null,
             'type' => Type::listOf(self::getArrayValue($config, 'outputType')),
             'args' => $inputArgs,
-            'resolve' => function ($obj, $args, $info) use ($argName, $config) {
+            'resolve' => function ($obj, $args, $context, ResolveInfo $info) use ($argName, $config) {
                 $inputs = $args[$argName];
-                return array_map(function($input) use ($config, $info) {
-                    return call_user_func(self::getArrayValue($config, 'resolveSingleInput'), $input, $info);
+                return array_map(function($input) use ($config, $context, $info) {
+                    return call_user_func(self::getArrayValue($config, 'resolveSingleInput'), $input, $context, $info);
                 }, $inputs);
             }
         ];
