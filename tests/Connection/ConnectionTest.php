@@ -134,7 +134,9 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             }
         ]);
 
-        $this->schema = new Schema($this->queryType);
+        $this->schema = new Schema([
+            'query' => $this->queryType
+        ]);
     }
 
     public function testIncludesConnectionAndEdgeFields()
