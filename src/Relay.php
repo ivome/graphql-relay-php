@@ -8,6 +8,7 @@
 namespace GraphQLRelay;
 
 
+use GraphQL\Type\Definition\ObjectType;
 use GraphQLRelay\Connection\ArrayConnection;
 use GraphQLRelay\Connection\Connection;
 use GraphQLRelay\Mutation\Mutation;
@@ -48,7 +49,7 @@ class Relay {
     }
 
     /**
-     * Returns a GraphQLObjectType for a connection with the given name,
+     * Returns a GraphQLObjectType for a connection and its edge with the given name,
      * and whose nodes are of the specified type.
      *
      * @param array $config
@@ -57,6 +58,30 @@ class Relay {
     public static function connectionDefinitions(array $config)
     {
         return Connection::connectionDefinitions($config);
+    }
+
+    /**
+     * Returns a GraphQLObjectType for a connection with the given name,
+     * and whose nodes are of the specified type.
+     *
+     * @param array $config
+     * @return ObjectType
+     */
+    public static function connection(array $config)
+    {
+        return Connection::createConnectionType($config);
+    }
+
+    /**
+     * Returns a GraphQLObjectType for a edge with the given name,
+     * and whose nodes are of the specified type.
+     *
+     * @param array $config
+     * @return ObjectType
+     */
+    public static function edge(array $config)
+    {
+        return Connection::createEdgeType($config);
     }
 
     /**
