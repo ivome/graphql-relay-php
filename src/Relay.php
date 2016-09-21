@@ -67,7 +67,7 @@ class Relay {
      * @param array $config
      * @return ObjectType
      */
-    public static function connection(array $config)
+    public static function connectionType(array $config)
     {
         return Connection::createConnectionType($config);
     }
@@ -79,7 +79,7 @@ class Relay {
      * @param array $config
      * @return ObjectType
      */
-    public static function edge(array $config)
+    public static function edgeType(array $config)
     {
         return Connection::createEdgeType($config);
     }

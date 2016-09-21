@@ -72,14 +72,9 @@ class Connection {
      */
     public static function connectionDefinitions(array $config)
     {
-        $edgeType = array_key_exists('edgeType', $config) ? $config['edgeType'] : null;
-
-        $edgeType = $edgeType ? : self::createEdgeType($config);
-        $connectionType = self::createConnectionType(array_merge($config, ['edgeType' => $edgeType]));
-
         return [
-            'edgeType' => $edgeType,
-            'connectionType' => $connectionType
+            'edgeType' => self::createEdgeType($config),
+            'connectionType' => self::createConnectionType($config)
         ];
     }
 
