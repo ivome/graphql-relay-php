@@ -5,9 +5,8 @@
         </testsuite>
     </testsuites>
     <filter>
-        <blacklist>
-            <directory>./vendor</directory>
-            <directory>./bin</directory>
-        </blacklist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
     </filter>
 </phpunit>
