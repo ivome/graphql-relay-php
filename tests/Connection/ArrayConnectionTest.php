@@ -7,8 +7,6 @@
 
 namespace GraphQLRelay\Tests\Connection;
 
-
-use DoctrineTest\InstantiatorTestAsset\ArrayObjectAsset;
 use GraphQLRelay\Connection\ArrayConnection;
 
 class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
