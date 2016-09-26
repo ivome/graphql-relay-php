@@ -11,6 +11,7 @@ use GraphQL\GraphQL;
 use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQLRelay\Connection\Connection;
 use GraphQLRelay\Mutation\Mutation;
 
 class MutationTest extends \PHPUnit_Framework_TestCase
@@ -29,6 +30,11 @@ class MutationTest extends \PHPUnit_Framework_TestCase
      * @var ObjectType
      */
     protected $mutation;
+
+    /**
+     * @var ObjectType
+     */
+    protected $edgeMutation;
 
     /**
      * @var Schema
@@ -73,11 +79,34 @@ class MutationTest extends \PHPUnit_Framework_TestCase
             }
         ]);
 
+        $userType = new ObjectType([
+           'name' => 'User',
+            'fields' => [
+                'name' => [
+                    'type' => Type::string()
+                ]
+            ]
+        ]);
+
+        $this->edgeMutation = Mutation::mutationWithClientMutationId([
+            'name' => 'EdgeMutation',
+            'inputFields' => [],
+            'outputFields' => [
+                'result' => [
+                    'type' => Connection::createEdgeType(['nodeType' => $userType ])
+                ]
+            ],
+            'mutateAndGetPayload' => function () {
+                return ['result' => ['node' => ['name' => 'Robert'], 'cursor' => 'SWxvdmVHcmFwaFFM']];
+            }
+        ]);
+
         $this->mutation = new ObjectType([
             'name' => 'Mutation',
             'fields' => [
                 'simpleMutation' => $this->simpleMutation,
-                'simpleMutationWithThunkFields' => $this->simpleMutationWithThunkFields
+                'simpleMutationWithThunkFields' => $this->simpleMutationWithThunkFields,
+                'edgeMutation' => $this->edgeMutation
             ]
         ]);
 
@@ -119,18 +148,27 @@ class MutationTest extends \PHPUnit_Framework_TestCase
         $this->assertValidQuery($query, $expected);
     }
 
-    public function testSupportsThunksAsInputAndOutputFields()
+
+    public function testSupportsEdgeAsOutputField()
     {
         $query = 'mutation M {
-            simpleMutationWithThunkFields(input: {inputData: 1234, clientMutationId: "abc"}) {
-              result
+            edgeMutation(input: {clientMutationId: "abc"}) {
+              result {
+                  node {
+                      name
+                  }
+                  cursor
+              }
               clientMutationId
             }
           }';
 
         $expected = [
-            'simpleMutationWithThunkFields' => [
-                'result' => 1234,
+            'edgeMutation' => [
+                'result' => [
+                    'node' => ['name' => 'Robert'],
+                    'cursor' => 'SWxvdmVHcmFwaFFM'
+                ],
                 'clientMutationId' => 'abc'
             ]
         ];
@@ -299,6 +337,26 @@ class MutationTest extends \PHPUnit_Framework_TestCase
                             ],
                             'type' => [
                                 'name' => 'SimpleMutationWithThunkFieldsPayload',
+                                'kind' => 'OBJECT',
+                            ]
+                        ],
+                        [
+                            'name' => 'edgeMutation',
+                            'args' => [
+                                [
+                                    'name' => 'input',
+                                    'type' => [
+                                        'name' => null,
+                                        'kind' => 'NON_NULL',
+                                        'ofType' => [
+                                            'name' => 'EdgeMutationInput',
+                                            'kind' => 'INPUT_OBJECT'
+                                        ]
+                                    ],
+                                ]
+                            ],
+                            'type' => [
+                                'name' => 'EdgeMutationPayload',
                                 'kind' => 'OBJECT',
                             ]
                         ],

@@ -13,7 +13,7 @@ use GraphQL\Type\Definition\Type;
 use GraphQLRelay\Connection\ArrayConnection;
 use GraphQLRelay\Connection\Connection;
 
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class SeparateConnectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array
@@ -21,17 +21,27 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     protected $allUsers;
 
     /**
-     * @var \GraphQL\Type\Definition\ObjectType
+     * @var ObjectType
      */
     protected $userType;
 
     /**
-     * @var array
+     * @var ObjectType
      */
-    protected $friendConnection;
+    protected $friendEdge;
 
     /**
-     * @var array
+     * @var ObjectType
+     */
+    protected $friendConnection;
+    
+    /**
+     * @var ObjectType
+     */
+    protected $userEdge;
+
+    /**
+     * @var ObjectType
      */
     protected $userConnection;
 
@@ -87,7 +97,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
             }
         ]);
 
-        $this->friendConnection = Connection::connectionDefinitions([
+        $this->friendEdge = Connection::createEdgeType([
             'name' => 'Friend',
             'nodeType' => $this->userType,
             'resolveNode' => function ($edge) {
@@ -100,7 +110,13 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
                         'resolve' => function() { return 'Yesterday'; }
                     ]
                 ];
-            },
+            }
+        ]);
+
+        $this->friendConnection = Connection::createConnectionType([
+            'name' => 'Friend',
+            'nodeType' => $this->userType,
+            'edgeType' => $this->friendEdge,
             'connectionFields' => function() {
                 return [
                     'totalCount' => [
@@ -111,14 +127,19 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
                     ]
                 ];
             }
-        ])['connectionType'];
+        ]);
 
-        $this->userConnection = Connection::connectionDefinitions([
+        $this->userEdge = Connection::createEdgeType([
             'nodeType' => $this->userType,
             'resolveNode' => function ($edge) {
                 return $this->allUsers[$edge['node']];
             }
-        ])['connectionType'];
+        ]);
+
+        $this->userConnection = Connection::createConnectionType([
+            'nodeType' => $this->userType,
+            'edgeType' => $this->userEdge
+        ]);
 
         $this->queryType = new ObjectType([
             'name' => 'Query',
@@ -249,27 +270,6 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertValidQuery($query, $expected);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testEdgeTypeThrowsWithoutNodeType() {
-        Connection::createEdgeType([]);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testConnectionTypeThrowsWithoutNodeType() {
-        Connection::createConnectionType([]);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testConnectionDefinitionThrowsWithoutNodeType() {
-        Connection::connectionDefinitions([]);
     }
 
     /**

@@ -61,6 +61,8 @@ when they return a connection type that only supports forward pagination.
 when they return a connection type that only supports backward pagination.
  - `Relay::connectionDefinitions` returns a `connectionType` and its associated
 `edgeType`, given a node type.
+ - `Relay::edgeType` returns a new `edgeType`
+ - `Relay::connectionType` returns a new `connectionType`
  - `Relay::connectionFromArray` is a helper method that takes an array and the
 arguments from `connectionArgs`, does pagination and filtering, and returns
 an object in the shape expected by a `connectionType`'s `resolve` function.
@@ -73,7 +75,17 @@ An example usage of these methods from the [test schema](tests/StarWarsSchema.ph
 $shipConnection = Relay::connectionDefinitions([
     'nodeType' => $shipType
 ]);
-  
+
+// this could also be written as
+//
+// $shipEdge = Relay::edgeType([
+//     'nodeType' => $shipType
+// ]);
+// $shipConnection = Relay::connectionType([
+//     'nodeType' => $shipType,
+//     'edgeType' => $shipEdge
+// ]);
+
 $factionType = new ObjectType([
     'name' => 'Faction',
     'description' => 'A faction in the Star Wars saga',

@@ -72,13 +72,65 @@ class Connection {
      */
     public static function connectionDefinitions(array $config)
     {
+        return [
+            'edgeType' => self::createEdgeType($config),
+            'connectionType' => self::createConnectionType($config)
+        ];
+    }
+
+    /**
+     * Returns a GraphQLObjectType for a connection with the given name,
+     * and whose nodes are of the specified type.
+     *
+     * @return ObjectType
+     */
+    public static function createConnectionType(array $config)
+    {
         if (!array_key_exists('nodeType', $config)){
             throw new \InvalidArgumentException('Connection config needs to have at least a node definition');
         }
         $nodeType = $config['nodeType'];
         $name = array_key_exists('name', $config) ? $config['name'] : $nodeType->name;
-        $edgeFields = array_key_exists('edgeFields', $config) ? $config['edgeFields'] : [];
         $connectionFields = array_key_exists('connectionFields', $config) ? $config['connectionFields'] : [];
+        $edgeType = array_key_exists('edgeType', $config) ? $config['edgeType'] : null;
+
+        $connectionType = new ObjectType([
+            'name' => $name . 'Connection',
+            'description' => 'A connection to a list of items.',
+            'fields' => function() use ($edgeType, $connectionFields, $config) {
+                return array_merge([
+                    'pageInfo' => [
+                        'type' => Type::nonNull(self::pageInfoType()),
+                        'description' => 'Information to aid in pagination.'
+                    ],
+                    'edges' => [
+                        'type' => function() use ($edgeType, $config) {
+                            return Type::listOf($edgeType ?: self::createEdgeType($config));
+                        },
+                        'description' => 'Information to aid in pagination'
+                    ]
+                ], self::resolveMaybeThunk($connectionFields));
+            }
+        ]);
+
+        return $connectionType;
+    }
+
+    /**
+     * Returns a GraphQLObjectType for an edge with the given name,
+     * and whose nodes are of the specified type.
+     *
+     * @param array $config
+     * @return ObjectType
+     */
+    public static function createEdgeType(array $config)
+    {
+        if (!array_key_exists('nodeType', $config)){
+            throw new \InvalidArgumentException('Edge config needs to have at least a node definition');
+        }
+        $nodeType = $config['nodeType'];
+        $name = array_key_exists('name', $config) ? $config['name'] : $nodeType->name;
+        $edgeFields = array_key_exists('edgeFields', $config) ? $config['edgeFields'] : [];
         $resolveNode = array_key_exists('resolveNode', $config) ? $config['resolveNode'] : null;
         $resolveCursor = array_key_exists('resolveCursor', $config) ? $config['resolveCursor'] : null;
 
@@ -101,27 +153,7 @@ class Connection {
             }
         ]));
 
-        $connectionType = new ObjectType([
-            'name' => $name . 'Connection',
-            'description' => 'A connection to a list of items.',
-            'fields' => function() use ($edgeType, $connectionFields) {
-                return array_merge([
-                    'pageInfo' => [
-                        'type' => Type::nonNull(self::pageInfoType()),
-                        'description' => 'Information to aid in pagination.'
-                    ],
-                    'edges' => [
-                        'type' => Type::listOf($edgeType),
-                        'description' => 'Information to aid in pagination'
-                    ]
-                ], self::resolveMaybeThunk($connectionFields));
-            }
-        ]);
-
-        return [
-            'edgeType' => $edgeType,
-            'connectionType' => $connectionType
-        ];
+        return $edgeType;
     }
 
     /**
