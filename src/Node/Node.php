@@ -28,7 +28,7 @@ class Node {
      * @param callable $typeResolver
      * @return array
      */
-    public static function nodeDefinitions(callable $idFetcher, callable $typeResolver) {
+    public static function nodeDefinitions(callable $idFetcher, callable $typeResolver = null) {
         $nodeInterface = new InterfaceType([
             'name' => 'Node',
             'description' => 'An object with an ID',
