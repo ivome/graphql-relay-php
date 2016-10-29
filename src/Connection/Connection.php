@@ -104,9 +104,7 @@ class Connection {
                         'description' => 'Information to aid in pagination.'
                     ],
                     'edges' => [
-                        'type' => function() use ($edgeType, $config) {
-                            return Type::listOf($edgeType ?: self::createEdgeType($config));
-                        },
+                        'type' => Type::listOf($edgeType ?: self::createEdgeType($config)),
                         'description' => 'Information to aid in pagination'
                     ]
                 ], self::resolveMaybeThunk($connectionFields));
