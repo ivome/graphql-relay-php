@@ -176,7 +176,7 @@ class Relay {
      * @param callable $typeResolver
      * @return array
      */
-    public static function nodeDefinitions(callable $idFetcher, callable $typeResolver) {
+    public static function nodeDefinitions(callable $idFetcher, callable $typeResolver = null) {
         return Node::nodeDefinitions($idFetcher, $typeResolver);
     }
 
