@@ -49,7 +49,7 @@ class Mutation {
             $inputFieldsResolved = self::resolveMaybeThunk($inputFields);
             return array_merge($inputFieldsResolved !== null ? $inputFieldsResolved : [], [
                 'clientMutationId' => [
-                    'type' => Type::nonNull(Type::string())
+                    'type' => Type::string()
                 ]
             ]);
         };
@@ -58,7 +58,7 @@ class Mutation {
             $outputFieldsResolved = self::resolveMaybeThunk($outputFields);
             return array_merge($outputFieldsResolved !== null ? $outputFieldsResolved : [], [
                 'clientMutationId' => [
-                    'type' => Type::nonNull(Type::string())
+                    'type' => Type::string()
                 ]
             ]);
         };
