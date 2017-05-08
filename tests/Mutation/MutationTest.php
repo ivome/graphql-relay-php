@@ -148,6 +148,24 @@ class MutationTest extends \PHPUnit_Framework_TestCase
         $this->assertValidQuery($query, $expected);
     }
 
+    public function testReturnsNullWithOmittedClientMutationID()
+    {
+        $query = 'mutation M {
+            simpleMutation(input: {}) {
+              result
+              clientMutationId
+            }
+          }';
+
+        $expected = [
+            'simpleMutation' => [
+                'result' => 1,
+                'clientMutationId' => null
+            ]
+        ];
+
+        $this->assertValidQuery($query, $expected);
+    }
 
     public function testSupportsEdgeAsOutputField()
     {
