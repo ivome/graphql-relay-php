@@ -204,12 +204,9 @@ class MutationTest extends \PHPUnit_Framework_TestCase
                     [
                         'name' => 'clientMutationId',
                         'type' => [
-                            'name' => null,
-                            'kind' => 'NON_NULL',
-                            'ofType' => [
-                                'name' => 'String',
-                                'kind' => 'SCALAR'
-                            ]
+                            'name' => 'String',
+                            'kind' => 'SCALAR',
+                            'ofType' => null
                         ]
                     ]
                 ]
@@ -254,12 +251,9 @@ class MutationTest extends \PHPUnit_Framework_TestCase
                     [
                         'name' => 'clientMutationId',
                         'type' => [
-                            'name' => null,
-                            'kind' => 'NON_NULL',
-                            'ofType' => [
-                                'name' => 'String',
-                                'kind' => 'SCALAR'
-                            ]
+                            'name' => 'String',
+                            'kind' => 'SCALAR',
+                            'ofType' => null
                         ]
                     ]
                 ]
