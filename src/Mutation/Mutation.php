@@ -82,7 +82,7 @@ class Mutation {
             ],
             'resolve' => function ($query, $args, $context, ResolveInfo $info) use ($mutateAndGetPayload) {
                 $payload = call_user_func($mutateAndGetPayload, $args['input'], $context, $info);
-                $payload['clientMutationId'] = $args['input']['clientMutationId'];
+                $payload['clientMutationId'] = isset($args['input']['clientMutationId']) ? $args['input']['clientMutationId'] : null;
                 return $payload;
             }
         ];
