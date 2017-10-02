@@ -103,9 +103,17 @@ class Connection {
                         'type' => Type::nonNull(self::pageInfoType()),
                         'description' => 'Information to aid in pagination.'
                     ],
+                    'totalCount' => [
+                        'type' => Type::Int(),
+                        'description' => sprintf('The count of all %s you could get from the connection.', $config['nodeType'])
+                    ],
+                    'nodes' => [
+                        'type' => Type::listOf($config['nodeType']),
+                        'description' => sprintf('A list of %s objects.', $config['nodeType'])
+                    ],
                     'edges' => [
                         'type' => Type::listOf($edgeType ?: self::createEdgeType($config)),
-                        'description' => 'Information to aid in pagination'
+                        'description' => sprintf('A list of edges which contains the %s and cursor to aid in pagination.', $config['nodeType'])
                     ]
                 ], self::resolveMaybeThunk($connectionFields));
             }

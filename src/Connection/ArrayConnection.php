@@ -131,6 +131,8 @@ class ArrayConnection
 
         return [
             'edges' => $edges,
+            'totalCount' => $arrayLength,
+            'nodes' => $slice,
             'pageInfo' => [
                 'startCursor' => $firstEdge ? $firstEdge['cursor'] : null,
                 'endCursor' => $lastEdge ? $lastEdge['cursor'] : null,
