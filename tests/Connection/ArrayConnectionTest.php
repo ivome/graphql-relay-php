@@ -18,6 +18,13 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = ArrayConnection::connectionFromArray($this->letters, []);
 
         $expected = array (
+            'nodes' => array(
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -46,6 +53,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -63,6 +71,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = ArrayConnection::connectionFromArray($this->letters, ['first' => 2]);
 
         $expected = array (
+            'nodes' => array(
+                'A',
+                'B',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -76,6 +88,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -93,6 +106,13 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = ArrayConnection::connectionFromArray($this->letters, ['first' => 10]);
 
         $expected = array (
+            'nodes' => array(
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -121,6 +141,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -138,6 +159,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = ArrayConnection::connectionFromArray($this->letters, ['last' => 2]);
 
         $expected = array (
+            'nodes' => array(
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -151,6 +176,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -168,6 +194,13 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = ArrayConnection::connectionFromArray($this->letters, ['last' => 10]);
 
         $expected = array (
+            'nodes' => array(
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -196,6 +229,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -213,6 +247,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = ArrayConnection::connectionFromArray($this->letters, ['first' => 2, 'after' => 'YXJyYXljb25uZWN0aW9uOjE=']);
 
         $expected = array (
+            'nodes' => array(
+                'C',
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -226,6 +264,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -243,6 +282,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         $connection = ArrayConnection::connectionFromArray($this->letters, ['first' => 10, 'after' => 'YXJyYXljb25uZWN0aW9uOjE=']);
 
         $expected = array (
+            'nodes' => array(
+                'C',
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -261,6 +305,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -281,6 +326,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -294,6 +343,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -314,6 +364,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'A',
+                'B',
+                'C',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -332,6 +387,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -353,6 +409,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -366,6 +426,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -387,6 +448,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -405,6 +471,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -426,6 +493,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -444,6 +516,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -465,6 +538,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'C',
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -478,6 +555,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -499,6 +577,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -517,6 +600,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -538,6 +622,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -556,6 +645,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -575,9 +665,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(),
             'edges' =>
                 array (
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => NULL,
@@ -598,6 +690,13 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -626,6 +725,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -646,6 +746,13 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -674,6 +781,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -694,9 +802,11 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $expected = array (
+            'nodes' => array(),
             'edges' =>
                 array (
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => NULL,
@@ -738,6 +848,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -751,6 +865,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -778,6 +893,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array (
+            'nodes' => array(
+                'B',
+                'C',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -791,6 +910,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -818,6 +938,9 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array (
+            'nodes' => array(
+                'C',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -826,6 +949,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -853,6 +977,9 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array (
+            'nodes' => array(
+                'C',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -861,6 +988,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -888,6 +1016,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array (
+            'nodes' => array(
+                'D',
+                'E',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -901,6 +1033,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjQ=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -928,6 +1061,10 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array (
+            'nodes' => array(
+                'C',
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -941,6 +1078,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -968,6 +1106,9 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
         );
 
         $expected = array (
+            'nodes' => array(
+                'D',
+            ),
             'edges' =>
                 array (
                     0 =>
@@ -976,6 +1117,7 @@ class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                         ),
                 ),
+            'totalCount' => 5,
             'pageInfo' =>
                 array (
                     'startCursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
