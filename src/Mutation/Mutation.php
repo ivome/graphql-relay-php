@@ -33,6 +33,8 @@ class Mutation {
      *
      * type MutationConfig = {
      *   name: string,
+     *   description?: string,
+     *   deprecationReason?: string,
      *   inputFields: InputObjectConfigFieldMap,
      *   outputFields: GraphQLFieldConfigMap,
      *   mutateAndGetPayload: mutationFn,
@@ -73,7 +75,7 @@ class Mutation {
             'fields' => $augmentedInputFields
         ]);
 
-        return [
+        $definition = [
             'type' => $outputType,
             'args' => [
                 'input' => [
@@ -86,6 +88,13 @@ class Mutation {
                 return $payload;
             }
         ];
+	    if (array_key_exists('description', $config)){
+		    $definition['description'] = $config['description'];
+	    }
+	    if (array_key_exists('deprecationReason', $config)){
+		    $definition['deprecationReason'] = $config['deprecationReason'];
+	    }
+        return $definition;
     }
 
     /**
