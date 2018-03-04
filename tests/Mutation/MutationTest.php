@@ -21,6 +21,16 @@ class MutationTest extends \PHPUnit_Framework_TestCase
      */
     protected $simpleMutation;
 
+	/**
+	 * @var ObjectType
+	 */
+	protected $simpleMutationWithDescription;
+
+	/**
+	 * @var ObjectType
+	 */
+	protected $simpleMutationWithDeprecationReason;
+
     /**
      * @var ObjectType
      */
@@ -55,6 +65,34 @@ class MutationTest extends \PHPUnit_Framework_TestCase
                 return ['result' => 1];
             }
         ]);
+
+	    $this->simpleMutationWithDescription = Mutation::mutationWithClientMutationId([
+		    'name' => 'SimpleMutationWithDescription',
+		    'description' => 'Simple Mutation Description',
+		    'inputFields' => [],
+		    'outputFields' => [
+			    'result' => [
+				    'type' => Type::int()
+			    ]
+		    ],
+		    'mutateAndGetPayload' => function () {
+			    return ['result' => 1];
+		    }
+	    ]);
+
+	    $this->simpleMutationWithDeprecationReason = Mutation::mutationWithClientMutationId([
+		    'name' => 'SimpleMutationWithDeprecationReason',
+		    'inputFields' => [],
+		    'outputFields' => [
+			    'result' => [
+				    'type' => Type::int()
+			    ]
+		    ],
+		    'mutateAndGetPayload' => function () {
+			    return ['result' => 1];
+		    },
+		    'deprecationReason' => 'Just because'
+	    ]);
 
         $this->simpleMutationWithThunkFields = Mutation::mutationWithClientMutationId([
             'name' => 'SimpleMutationWithThunkFields',
@@ -105,6 +143,8 @@ class MutationTest extends \PHPUnit_Framework_TestCase
             'name' => 'Mutation',
             'fields' => [
                 'simpleMutation' => $this->simpleMutation,
+	            'simpleMutationWithDescription' => $this->simpleMutationWithDescription,
+	            'simpleMutationWithDeprecationReason' => $this->simpleMutationWithDeprecationReason,
                 'simpleMutationWithThunkFields' => $this->simpleMutationWithThunkFields,
                 'edgeMutation' => $this->edgeMutation
             ]
@@ -332,6 +372,26 @@ class MutationTest extends \PHPUnit_Framework_TestCase
                                 'kind' => 'OBJECT',
                             ]
                         ],
+	                    [
+		                    'name' => 'simpleMutationWithDescription',
+		                    'args' => [
+			                    [
+				                    'name' => 'input',
+				                    'type' => [
+					                    'name' => null,
+					                    'kind' => 'NON_NULL',
+					                    'ofType' => [
+						                    'name' => 'SimpleMutationWithDescriptionInput',
+						                    'kind' => 'INPUT_OBJECT'
+					                    ]
+				                    ],
+			                    ]
+		                    ],
+		                    'type' => [
+			                    'name' => 'SimpleMutationWithDescriptionPayload',
+			                    'kind' => 'OBJECT',
+		                    ]
+	                    ],
                         [
                             'name' => 'simpleMutationWithThunkFields',
                             'args' => [
@@ -403,6 +463,96 @@ class MutationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertValidQuery($query, $expected);
     }
+
+	public function testContainsCorrectDescriptions() {
+		$query = '{
+	        __schema {
+	          mutationType {
+	            fields {
+	              name
+	              description
+	            }
+	          }
+	        }
+	      }';
+
+		$expected = [
+			'__schema' => [
+				'mutationType' => [
+					'fields' => [
+						[
+							'name' => 'simpleMutation',
+							'description' => null
+						],
+						[
+							'name' => 'simpleMutationWithDescription',
+							'description' => 'Simple Mutation Description'
+						],
+						[
+							'name' => 'simpleMutationWithThunkFields',
+							'description' => null
+						],
+						[
+							'name' => 'edgeMutation',
+							'description' => null
+						]
+					]
+				]
+			]
+		];
+
+		$this->assertValidQuery($query, $expected);
+	}
+
+	public function testContainsCorrectDeprecationReasons() {
+		$query = '{
+	        __schema {
+	          mutationType {
+	            fields(includeDeprecated: true) {
+	              name
+	              isDeprecated
+	              deprecationReason
+	            }
+	          }
+	        }
+	      }';
+
+		$expected = [
+			'__schema' => [
+				'mutationType' => [
+					'fields' => [
+						[
+							'name' => 'simpleMutation',
+							'isDeprecated' => false,
+							'deprecationReason' => null
+						],
+						[
+							'name' => 'simpleMutationWithDescription',
+							'isDeprecated' => false,
+							'deprecationReason' => null
+						],
+						[
+							'name' => 'simpleMutationWithDeprecationReason',
+							'isDeprecated' => true,
+							'deprecationReason' => 'Just because',
+						],
+						[
+							'name' => 'simpleMutationWithThunkFields',
+							'isDeprecated' => false,
+							'deprecationReason' => null
+						],
+						[
+							'name' => 'edgeMutation',
+							'isDeprecated' => false,
+							'deprecationReason' => null
+						]
+					]
+				]
+			]
+		];
+
+		$this->assertValidQuery($query, $expected);
+	}
 
     /**
      * Helper function to test a query and the expected response.
