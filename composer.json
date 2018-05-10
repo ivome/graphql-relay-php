@@ -2,7 +2,7 @@
     "name":              "ivome/graphql-relay-php",
     "description":       "A PHP port of GraphQL Relay reference implementation",
     "type":              "library",
-    "license":           "BSD",
+    "license":           "BSD-3-Clause",
     "homepage":          "https://github.com/ivome/graphql-relay-php",
     "keywords":          [
         "graphql",
