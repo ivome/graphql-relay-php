@@ -105,7 +105,7 @@ class Connection {
                     ],
                     'edges' => [
                         'type' => Type::listOf($edgeType ?: self::createEdgeType($config)),
-                        'description' => 'Information to aid in pagination'
+                        'description' => 'A list of edges.'
                     ]
                 ], self::resolveMaybeThunk($connectionFields));
             }
