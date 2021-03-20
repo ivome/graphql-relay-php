@@ -7,9 +7,9 @@
 namespace GraphQLRelay\Tests\Connection;
 
 use GraphQL\GraphQL;
-use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use GraphQLRelay\Connection\ArrayConnection;
 use GraphQLRelay\Connection\Connection;
 
@@ -277,7 +277,7 @@ class SeparateConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertValidQuery($query, $expected)
     {
-        $result = GraphQL::execute($this->schema, $query);
+        $result = GraphQL::executeQuery($this->schema, $query)->toArray();
         $this->assertEquals(['data' => $expected], $result);
     }
 }

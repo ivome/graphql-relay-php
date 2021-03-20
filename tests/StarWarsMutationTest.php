@@ -52,7 +52,7 @@ class StarWarsMutationTest extends \PHPUnit_Framework_TestCase
                 ),
         );
 
-        $result = GraphQL::execute(StarWarsSchema::getSchema(), $mutation, null, null, $params);
+        $result = GraphQL::executeQuery(StarWarsSchema::getSchema(), $mutation, null, null, $params)->toArray();
 
         $this->assertEquals(['data' => $expected], $result);
     }

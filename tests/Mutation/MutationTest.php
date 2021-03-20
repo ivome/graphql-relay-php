@@ -8,9 +8,9 @@ namespace GraphQLRelay\Tests\Mutation;
 
 
 use GraphQL\GraphQL;
-use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use GraphQLRelay\Connection\Connection;
 use GraphQLRelay\Mutation\Mutation;
 
@@ -163,7 +163,7 @@ class MutationTest extends \PHPUnit_Framework_TestCase
             }
           }';
 
-        $result = GraphQL::execute($this->schema, $query);
+        $result = GraphQL::executeQuery($this->schema, $query)->toArray();
 
         $this->assertEquals(count($result['errors']), 1);
         $this->assertEquals($result['errors'][0]['message'], 'Field "simpleMutation" argument "input" of type "SimpleMutationInput!" is required but not provided.');
@@ -459,7 +459,7 @@ class MutationTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $result = GraphQL::execute($this->schema, $query);
+        $result = GraphQL::executeQuery($this->schema, $query)->toArray();
 
         $this->assertValidQuery($query, $expected);
     }
@@ -559,6 +559,6 @@ class MutationTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertValidQuery($query, $expected)
     {
-        $this->assertEquals(['data' => $expected], GraphQL::execute($this->schema, $query));
+        $this->assertEquals(['data' => $expected], GraphQL::executeQuery($this->schema, $query)->toArray());
     }
 }

@@ -123,7 +123,7 @@ class StarWarsObjectIdentificationTest extends \PHPUnit_Framework_TestCase
      */
     private function assertValidQuery($query, $expected)
     {
-        $result = GraphQL::execute(StarWarsSchema::getSchema(), $query);
+        $result = GraphQL::executeQuery(StarWarsSchema::getSchema(), $query)->toArray();
 
         $this->assertEquals(['data' => $expected], $result);
     }
