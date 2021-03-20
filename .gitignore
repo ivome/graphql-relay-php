@@ -4,3 +4,4 @@
 /vendor/
 /bin/
 /build/
+/.phpunit.result.cache
