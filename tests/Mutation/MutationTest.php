@@ -13,8 +13,9 @@ use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQLRelay\Connection\Connection;
 use GraphQLRelay\Mutation\Mutation;
+use PHPUnit\Framework\TestCase;
 
-class MutationTest extends \PHPUnit_Framework_TestCase
+class MutationTest extends TestCase
 {
     /**
      * @var ObjectType

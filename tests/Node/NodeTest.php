@@ -14,9 +14,10 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Schema;
 use GraphQL\Type\Definition\Type;
 use GraphQLRelay\Node\Node;
+use PHPUnit\Framework\TestCase;
 
 
-class NodeTest extends \PHPUnit_Framework_TestCase {
+class NodeTest extends TestCase {
     /**
      * Node definition, so that it is only created once
      *

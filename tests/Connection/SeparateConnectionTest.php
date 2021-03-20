@@ -12,8 +12,9 @@ use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQLRelay\Connection\ArrayConnection;
 use GraphQLRelay\Connection\Connection;
+use PHPUnit\Framework\TestCase;
 
-class SeparateConnectionTest extends \PHPUnit_Framework_TestCase
+class SeparateConnectionTest extends TestCase
 {
     /**
      * @var array

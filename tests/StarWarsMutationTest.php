@@ -9,8 +9,9 @@ namespace GraphQLRelay\tests;
 
 
 use GraphQL\GraphQL;
+use PHPUnit\Framework\TestCase;
 
-class StarWarsMutationTest extends \PHPUnit_Framework_TestCase
+class StarWarsMutationTest extends TestCase
 {
     public function testMutatesTheDataSet()
     {

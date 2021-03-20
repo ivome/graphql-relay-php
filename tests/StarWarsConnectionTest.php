@@ -9,8 +9,9 @@ namespace GraphQLRelay\tests;
 
 
 use GraphQL\GraphQL;
+use PHPUnit\Framework\TestCase;
 
-class StarWarsConnectionTest extends \PHPUnit_Framework_TestCase
+class StarWarsConnectionTest extends TestCase
 {
     public function testFetchesTheFirstShipOfTheRebels()
     {

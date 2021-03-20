@@ -13,8 +13,9 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQLRelay\Node\Plural;
+use PHPUnit\Framework\TestCase;
 
-class PluralTest extends \PHPUnit_Framework_TestCase {
+class PluralTest extends TestCase {
     protected static function getSchema()
     {
         $userType = new ObjectType([

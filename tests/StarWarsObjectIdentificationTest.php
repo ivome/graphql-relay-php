@@ -9,8 +9,9 @@ namespace GraphQLRelay\tests;
 
 
 use GraphQL\GraphQL;
+use PHPUnit\Framework\TestCase;
 
-class StarWarsObjectIdentificationTest extends \PHPUnit_Framework_TestCase
+class StarWarsObjectIdentificationTest extends TestCase
 {
     public function testFetchesTheIDAndNameOfTheRebels()
     {
