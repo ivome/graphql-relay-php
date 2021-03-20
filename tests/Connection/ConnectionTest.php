@@ -46,7 +46,7 @@ class ConnectionTest extends TestCase
      */
     protected $schema;
 
-    public function setup()
+    public function setup(): void
     {
         $this->allUsers = [
             [ 'name' => 'Dan', 'friends' => [1, 2, 3, 4] ],
@@ -252,24 +252,18 @@ class ConnectionTest extends TestCase
         $this->assertValidQuery($query, $expected);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testEdgeTypeThrowsWithoutNodeType() {
+    	$this->expectException(\InvalidArgumentException::class);
         Connection::createEdgeType([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConnectionTypeThrowsWithoutNodeType() {
+    	$this->expectException(\InvalidArgumentException::class);
         Connection::createConnectionType([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConnectionDefinitionThrowsWithoutNodeType() {
+    	$this->expectException(\InvalidArgumentException::class);
         Connection::connectionDefinitions([]);
     }
 

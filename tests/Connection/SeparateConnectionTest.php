@@ -56,7 +56,7 @@ class SeparateConnectionTest extends TestCase
      */
     protected $schema;
 
-    public function setup()
+    public function setup(): void
     {
         $this->allUsers = [
             [ 'name' => 'Dan', 'friends' => [1, 2, 3, 4] ],

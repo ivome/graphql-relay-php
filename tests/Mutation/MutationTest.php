@@ -52,7 +52,7 @@ class MutationTest extends TestCase
      */
     protected $schema;
 
-    public function setup()
+    public function setup(): void
     {
         $this->simpleMutation = Mutation::mutationWithClientMutationId([
             'name' => 'SimpleMutation',
