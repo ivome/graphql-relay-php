@@ -7,13 +7,14 @@
 namespace GraphQLRelay\Tests\Connection;
 
 use GraphQL\GraphQL;
-use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use GraphQLRelay\Connection\ArrayConnection;
 use GraphQLRelay\Connection\Connection;
+use PHPUnit\Framework\TestCase;
 
-class SeparateConnectionTest extends \PHPUnit_Framework_TestCase
+class SeparateConnectionTest extends TestCase
 {
     /**
      * @var array
@@ -55,7 +56,7 @@ class SeparateConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected $schema;
 
-    public function setup()
+    public function setup(): void
     {
         $this->allUsers = [
             [ 'name' => 'Dan', 'friends' => [1, 2, 3, 4] ],
@@ -277,7 +278,7 @@ class SeparateConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertValidQuery($query, $expected)
     {
-        $result = GraphQL::execute($this->schema, $query);
+        $result = GraphQL::executeQuery($this->schema, $query)->toArray();
         $this->assertEquals(['data' => $expected], $result);
     }
 }

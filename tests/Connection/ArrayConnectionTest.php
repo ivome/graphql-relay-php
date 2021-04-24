@@ -8,8 +8,9 @@
 namespace GraphQLRelay\Tests\Connection;
 
 use GraphQLRelay\Connection\ArrayConnection;
+use PHPUnit\Framework\TestCase;
 
-class ArrayConnectionTest extends \PHPUnit_Framework_TestCase
+class ArrayConnectionTest extends TestCase
 {
     protected $letters = ['A', 'B', 'C', 'D', 'E'];
 

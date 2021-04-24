@@ -9,12 +9,13 @@ namespace GraphQLRelay\tests\Node;
 
 
 use GraphQL\GraphQL;
-use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use GraphQLRelay\Node\Plural;
+use PHPUnit\Framework\TestCase;
 
-class PluralTest extends \PHPUnit_Framework_TestCase {
+class PluralTest extends TestCase {
     protected static function getSchema()
     {
         $userType = new ObjectType([
@@ -179,7 +180,7 @@ class PluralTest extends \PHPUnit_Framework_TestCase {
      */
     private function assertValidQuery($query, $expected)
     {
-        $result = GraphQL::execute($this->getSchema(), $query, ['lang' => 'en']);
+        $result = GraphQL::executeQuery($this->getSchema(), $query, ['lang' => 'en'])->toArray();
         $this->assertEquals(['data' => $expected], $result);
     }
 }

@@ -7,13 +7,14 @@
 namespace GraphQLRelay\Tests\Connection;
 
 use GraphQL\GraphQL;
-use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use GraphQLRelay\Connection\ArrayConnection;
 use GraphQLRelay\Connection\Connection;
+use PHPUnit\Framework\TestCase;
 
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class ConnectionTest extends TestCase
 {
     /**
      * @var array
@@ -45,7 +46,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected $schema;
 
-    public function setup()
+    public function setup(): void
     {
         $this->allUsers = [
             [ 'name' => 'Dan', 'friends' => [1, 2, 3, 4] ],
@@ -251,24 +252,18 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertValidQuery($query, $expected);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testEdgeTypeThrowsWithoutNodeType() {
+    	$this->expectException(\InvalidArgumentException::class);
         Connection::createEdgeType([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConnectionTypeThrowsWithoutNodeType() {
+    	$this->expectException(\InvalidArgumentException::class);
         Connection::createConnectionType([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testConnectionDefinitionThrowsWithoutNodeType() {
+    	$this->expectException(\InvalidArgumentException::class);
         Connection::connectionDefinitions([]);
     }
 
@@ -277,7 +272,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertValidQuery($query, $expected)
     {
-        $result = GraphQL::execute($this->schema, $query);
+        $result = GraphQL::executeQuery($this->schema, $query)->toArray();
         $this->assertEquals(['data' => $expected], $result);
     }
 }

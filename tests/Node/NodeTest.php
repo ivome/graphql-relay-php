@@ -9,14 +9,15 @@ namespace GraphQLRelay\Tests\Node;
 
 
 use GraphQL\GraphQL;
-use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Schema;
 use GraphQL\Type\Definition\Type;
 use GraphQLRelay\Node\Node;
+use PHPUnit\Framework\TestCase;
 
 
-class NodeTest extends \PHPUnit_Framework_TestCase {
+class NodeTest extends TestCase {
     /**
      * Node definition, so that it is only created once
      *
@@ -402,7 +403,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase {
      */
     private function assertValidQuery($query, $expected)
     {
-        $result = GraphQL::execute($this->getSchema(), $query);
+        $result = GraphQL::executeQuery($this->getSchema(), $query)->toArray();
 
         $this->assertEquals(['data' => $expected], $result);
     }

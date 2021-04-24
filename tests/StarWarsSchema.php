@@ -8,9 +8,9 @@
 namespace GraphQLRelay\tests;
 
 
-use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use GraphQLRelay\Relay;
 
 class StarWarsSchema {

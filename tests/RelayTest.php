@@ -10,8 +10,9 @@ namespace GraphQLRelay\tests;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQLRelay\Connection\Connection;
 use GraphQLRelay\Relay;
+use PHPUnit\Framework\TestCase;
 
-class RelayTest extends \PHPUnit_Framework_TestCase
+class RelayTest extends TestCase
 {
     public function testForwardConnectionArgs()
     {

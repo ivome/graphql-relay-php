@@ -10,11 +10,11 @@
         "API"
     ],
     "require": {
-        "php": ">=5.4,<8.0-DEV",
-        "webonyx/graphql-php": ">=0.7.0"
+        "php": "^7.1 || ^8.0",
+        "webonyx/graphql-php": "^14.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8",
+        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
         "satooshi/php-coveralls": "~1.0"
     },
     "config": {
