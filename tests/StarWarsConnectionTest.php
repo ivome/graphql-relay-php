@@ -136,7 +136,7 @@ class StarWarsConnectionTest extends TestCase
                                             'cursor' => 'YXJyYXljb25uZWN0aW9uOjM=',
                                             'node' =>
                                                 array (
-                                                    'name' => 'Millenium Falcon',
+                                                    'name' => 'Millennium Falcon',
                                                 ),
                                         ),
                                     2 =>
@@ -257,7 +257,7 @@ class StarWarsConnectionTest extends TestCase
                                         array (
                                             'node' =>
                                                 array (
-                                                    'name' => 'Millenium Falcon',
+                                                    'name' => 'Millennium Falcon',
                                                 ),
                                         ),
                                     2 =>
