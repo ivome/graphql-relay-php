@@ -26,7 +26,7 @@ class StarWarsData {
 
     protected static $falcon = [
         'id' => '4',
-        'name' => 'Millenium Falcon'
+        'name' => 'Millennium Falcon'
     ];
 
     protected static $homeOne = [
